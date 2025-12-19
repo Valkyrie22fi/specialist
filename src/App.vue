@@ -1,5 +1,5 @@
 <script setup>
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
 
 import TheTable from './components/TheTable.vue'
 import TheСonvert from './components/TheСonvert.vue'
@@ -10,6 +10,9 @@ import TheStudentsList from './components/TheStudentsList.vue';
 import TheList from './components/TheList.vue';
 import TheLoginForm from './components/TheLoginForm.vue';
 import MyList from './components/MyList.vue';
+import MyStudentTable from './components/MyStudentTable.vue'
+import MyItem from './components/Task/MyItem.vue';
+import AppTasks from './components/Task/AppTasks.vue';
 
 const tableColumns = ref([
   '№',
@@ -35,6 +38,23 @@ const countries = [
   { id: 3, title: 'Япония' }
 ]
 
+const students = ref([
+  { id: 1, name: 'Иван', age: 20 },
+  { id: 2, name: 'Мария', age: 21 },
+  { id: 3, name: 'Алексей', age: 22 }
+])
+
+const removedCount = ref(0)
+
+const studentsCount = computed(() => students.value.length)
+
+const removeStudent = (student) => {
+  students.value = students.value.filter(
+    s => s.id !== student.id
+  )
+  removedCount.value++
+}
+
 const onSelect = (item) => {
   console.log('Выбран элемент:', item)
 }
@@ -42,11 +62,32 @@ const onSelect = (item) => {
 
 <template>
   <div class="wrapper">
+    <!-- Задачи из теоритической части курса Vue.js часть 9 -->
+    <AppTasks></AppTasks>
+
+
+
+
     <h2>Фрукты</h2>
     <MyList :items="fruits" @select="onSelect" />
 
     <h2>Страны</h2>
     <MyList :items="countries" @select="onSelect" />
+
+    <MyStudentTable
+      :students="students"
+      @remove="removeStudent"
+    >
+      <template #caption>
+        Список студентов ({{ studentsCount }})
+      </template>
+    </MyStudentTable>
+
+    <p>
+      Удалено студентов: {{ removedCount }}
+    </p>
+
+
     <TheTable />
     <TheСonvert />
     <TheMatrix />

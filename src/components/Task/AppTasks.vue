@@ -41,16 +41,35 @@
       </router-link>
       <router-view />
     </nav>
+
+    <!-- Задача 4 -->
+    <div>
+        <h2>Студенты</h2>
+        <p>Удалено студентов: {{ removedCount }}</p>
+
+        <MyStudentTable
+            :students="students"
+            @student-removed="onStudentRemoved"
+        >
+            <!-- Передаем caption через именованный слот -->
+            <template #caption>
+                Список студентов группы 101
+            </template>
+        </MyStudentTable>
+  </div>
 </template>
 
 <script>
 import MyItem from "./MyItem.vue";
 import MyList from "./MyList.vue";
+import MyStudentTable from "./MyStudentTable.vue";
+
 
 export default {
   components: {
     MyItem,
-    MyList
+    MyList,
+    MyStudentTable
   },
   data() {
     return {
@@ -60,8 +79,20 @@ export default {
       menuRoutes: [
         { path: "/", title: "Главная" },
         { path: "/products", title: "Товары" }
+      ],
+      removedCount: 0,
+      students: [
+        { id: 1, name: "Иван Иванов", age: 20 },
+        { id: 2, name: "Мария Петрова", age: 19 },
+        { id: 3, name: "Сергей Сидоров", age: 21 }
       ]
     };
+  },
+  methods: {
+    onStudentRemoved(student) {
+      this.removedCount++;
+      console.log("Удален студент:", student);
+    }
   }
 }
 </script>

@@ -28,6 +28,19 @@
 
     <h2>Список цветов</h2>
     <MyList :items="colors" />
+
+    <!-- Задача 3 -->
+     <nav>
+      <router-link
+        v-for="route in menuRoutes"
+        :key="route.path"
+        :to="route.path"
+        class="nav-link"
+      >
+        {{ route.title }}
+      </router-link>
+      <router-view />
+    </nav>
 </template>
 
 <script>
@@ -43,8 +56,27 @@ export default {
     return {
       fruits: ["Яблоко", "Банан", "Апельсин"],
       vegetables: ["Морковь", "Огурец", "Картофель"],
-      colors: ["Красный", "Зелёный", "Синий"]
+      colors: ["Красный", "Зелёный", "Синий"],
+      menuRoutes: [
+        { path: "/", title: "Главная" },
+        { path: "/products", title: "Товары" }
+      ]
     };
   }
 }
 </script>
+<style>
+nav {
+  margin-bottom: 20px;
+}
+
+.nav-link {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #333;
+}
+
+.nav-link.router-link-active {
+  font-weight: bold;
+}
+</style>
